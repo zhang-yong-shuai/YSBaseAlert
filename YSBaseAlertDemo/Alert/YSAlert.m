@@ -45,7 +45,6 @@ CGFloat const kYSAlertButtonHeight = 55.f;
         
         // update frame
         [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            
             make.height.equalTo(@0.f);
         }];
     }
@@ -55,16 +54,13 @@ CGFloat const kYSAlertButtonHeight = 55.f;
         
         // update frame
         CGRect messageFrame = [message boundingRectWithSize:CGSizeMake(kYSAlertMsgWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : self.messageLabel.font} context:nil];
-        
         CGFloat messageHeight = messageFrame.size.height + 2.f;
         
         // set max height
         if (messageHeight >= kYSAlertMsgMaxHeight) {
             messageHeight = kYSAlertMsgMaxHeight;
         }
-        
         [self.messageLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            
             make.height.equalTo(@(messageHeight));
         }];
     }
@@ -82,12 +78,11 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 - (void)placeSubviews {
     // 布局
     YSWeakSelf();
-
+    
     // alertview
-    [self.alertView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.centerX.equalTo(weakself);
-        make.centerY.equalTo(weakself).offset(-50.f);
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(weakself.window);
+        make.centerY.equalTo(weakself.window).offset(-50.f);
         make.bottom.equalTo(weakself.leftButton);
         make.width.equalTo(@(kYSAlertWidth));
     }];
@@ -95,44 +90,39 @@ CGFloat const kYSAlertButtonHeight = 55.f;
     // 标题
     CGFloat titleHeight = [@"温馨提示" sizeWithAttributes:@{NSFontAttributeName : self.titleLabel.font}].height;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.top.equalTo(weakself.alertView).offset(20.f);
-        make.left.right.equalTo(weakself.alertView);
+        make.top.equalTo(weakself).offset(20.f);
+        make.left.right.equalTo(weakself);
         make.height.equalTo(@(titleHeight));
     }];
     
     // 内容
     [self.messageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.equalTo(weakself.titleLabel.mas_bottom).offset(10.f);
-        make.left.equalTo(weakself.alertView).offset(15.f);
-        make.right.equalTo(weakself.alertView).offset(-15.f);
+        make.left.equalTo(weakself).offset(15.f);
+        make.right.equalTo(weakself).offset(-15.f);
         make.height.equalTo(@50.f);
     }];
     
     // separate line
     [self.separateLine mas_makeConstraints:^(MASConstraintMaker *make) {
-    
-        make.left.right.equalTo(weakself.alertView);
+        make.left.right.equalTo(weakself);
         make.bottom.equalTo(weakself.leftButton.mas_top);
         make.height.equalTo(@.5f);
     }];
     
     // 左侧按钮
     [self.leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.equalTo(weakself.messageLabel.mas_bottom).offset(30.0);
-        make.left.equalTo(weakself.alertView);
-        make.right.equalTo(weakself.alertView.mas_centerX);
+        make.left.equalTo(weakself);
+        make.right.equalTo(weakself.mas_centerX);
         make.height.equalTo(@(kYSAlertButtonHeight));
     }];
     
     // 右侧按钮
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        
         make.top.height.equalTo(weakself.leftButton);
-        make.left.equalTo(weakself.alertView.mas_centerX);
-        make.right.equalTo(weakself.alertView);
+        make.left.equalTo(weakself.mas_centerX);
+        make.right.equalTo(weakself);
     }];
 }
 
@@ -141,7 +131,7 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [UILabel new];
-        [self.alertView addSubview:_titleLabel];
+        [self addSubview:_titleLabel];
         _titleLabel.textColor = [UIColor blackColor];
         _titleLabel.font = [UIFont systemFontOfSize:20];
         _titleLabel.numberOfLines = 1;
@@ -151,11 +141,10 @@ CGFloat const kYSAlertButtonHeight = 55.f;
     return _titleLabel;
 }
 
-- (UILabel *)messageLabel
-{
+- (UILabel *)messageLabel {
     if (!_messageLabel) {
         _messageLabel = [UILabel new];
-        [self.alertView addSubview:_messageLabel];
+        [self addSubview:_messageLabel];
         _messageLabel.textColor = [UIColor blackColor];
         _messageLabel.font = [UIFont systemFontOfSize:18];
         _messageLabel.numberOfLines = 0;
@@ -168,7 +157,7 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 - (UIView *)separateLine {
     if (!_separateLine) {
         _separateLine = [UIView new];
-        [self.alertView addSubview:_separateLine];
+        [self addSubview:_separateLine];
         _separateLine.backgroundColor = [UIColor greenColor];
     }
     
@@ -178,7 +167,7 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 - (UIButton *)leftButton {
     if (!_leftButton) {
         _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.alertView addSubview:_leftButton];
+        [self addSubview:_leftButton];
         [_leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _leftButton.titleLabel.font = [UIFont systemFontOfSize:18];
         _leftButton.backgroundColor = [UIColor clearColor];
@@ -191,7 +180,7 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 - (UIButton *)rightButton {
     if (!_rightButton) {
         _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.alertView addSubview:_rightButton];
+        [self addSubview:_rightButton];
         [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _rightButton.titleLabel.font = [UIFont systemFontOfSize:18];
         _rightButton.backgroundColor = [UIColor greenColor];
@@ -204,7 +193,6 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 #pragma mark - show / hide
 - (void)leftButtonClicked:(UIButton *)button {
     [self dismiss];
-    
     if (self.leftButtonAction) {
         self.leftButtonAction();
     }
@@ -212,7 +200,6 @@ CGFloat const kYSAlertButtonHeight = 55.f;
 
 - (void)rightButtonClicked:(UIButton *)button {
     [self dismiss];
-    
     if (self.rightButtonAction) {
         self.rightButtonAction();
     }
