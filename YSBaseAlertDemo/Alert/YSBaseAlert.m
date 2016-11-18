@@ -50,6 +50,7 @@ static UIWindow *__window = nil;
     self.frame = CGRectMake(100, 100, 200, 200);
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = 6.f;
+    self.clipsToBounds = YES;
 }
 
 #pragma mark - getters
