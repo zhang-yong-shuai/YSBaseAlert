@@ -9,6 +9,7 @@
 #import "YSBaseAlert.h"
 
 CGFloat const kBaseAlertHudAlpha = .3f;
+NSTimeInterval kBaseAlertDuration = .1f;
 
 // class property
 static UIWindow *__window = nil;
@@ -77,12 +78,12 @@ static UIWindow *__window = nil;
 - (void)show {
     [self showWindow];
     YSWeakSelf();
-    [UIView animateWithDuration:.2f animations:^{
+    [UIView animateWithDuration:kBaseAlertDuration animations:^{
         weakself.layer.transform = CATransform3DMakeScale(1.1f, 1.1f, 1.f);
         weakself.overlayView.alpha = kBaseAlertHudAlpha;
         weakself.alpha = 1.f;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.14f animations:^{
+        [UIView animateWithDuration:kBaseAlertDuration animations:^{
             weakself.layer.transform = CATransform3DMakeScale(.9f, .9f, 1.f);
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:.2f animations:^{
@@ -94,10 +95,10 @@ static UIWindow *__window = nil;
 
 - (void)dismiss {
     YSWeakSelf();
-    [UIView animateWithDuration:.1f animations:^{
+    [UIView animateWithDuration:kBaseAlertDuration animations:^{
         weakself.layer.transform = CATransform3DMakeScale(1.1f, 1.1f, 1.f);
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.15f animations:^{
+        [UIView animateWithDuration:kBaseAlertDuration animations:^{
             weakself.layer.transform = CATransform3DIdentity;
             weakself.overlayView.alpha = 0.f;
             weakself.alpha = 0.f;
